@@ -39,7 +39,7 @@ public:
 
   void showPrice() override {
     SetConsoleTextAttribute(color, 12);
-    std::cout << name << ", price=" << price << " eur" << std::endl;
+    std::cout <<"[LEAF] " << name << ", price=" << price << " eur" << std::endl;
   }
 
   double showTotalCost() override {
@@ -61,8 +61,8 @@ public:
 
   void showPrice() override {
 
-    SetConsoleTextAttribute(color, 2);
-    std::cout << name << std::endl;
+    SetConsoleTextAttribute(color, 5);
+    std::cout <<"[COMPOSITE] "<< name << std::endl;
     for (Component *c: listOfComponents) {
       c->showPrice();
     }
@@ -85,15 +85,29 @@ int main() {
 
   auto *cpu = new Leaf("Intel i9 9540K", 700);
   auto *ram = new Leaf("Corsair X200 8GB", 300);
+
+  auto *keyboard = new Leaf("Razer", 150);
+  auto *mouse = new Leaf("Razer Naga", 180);
+  auto *monitor = new Leaf("Dell IPS", 600);
+
   auto *computer = new Composite("Computer");
   auto *motherboard = new Composite("Motherboard");
+  auto *peripherals = new Composite("Peripherals");
+
+  peripherals->addComponent(keyboard);
+  peripherals->addComponent(mouse);
+  peripherals->addComponent(monitor);
 
   computer->addComponent(motherboard);
+  computer->addComponent(peripherals);
+
   motherboard->addComponent(cpu);
   motherboard->addComponent(ram);
-  motherboard->showPrice();
+
+  computer->showPrice();
+
   SetConsoleTextAttribute(color, 1);
-  std::cout << "Total cost: " << cpu->showTotalCost() << " eur" << std::endl;
+  std::cout << "Total cost: " << peripherals->showTotalCost() << " eur" << std::endl;
 
   std::list<Component *> basket;
   basket.push_back(cpu);
